@@ -1,5 +1,3 @@
-# terraform-cdktf-project
-- Project Terraform CDKTF Code
 # Proyecto de Fin de Grado
 
 Este proyecto es parte de mi trabajo de fin de grado en la Universidad Francisco de Vitoria. Utiliza Terraform CDKTF para gestionar la infraestructura como código.
