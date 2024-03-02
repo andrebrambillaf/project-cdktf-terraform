@@ -3,7 +3,6 @@ from credentials import Credentials
 from constructs import Construct
 from cdktf import App, TerraformStack, TerraformResourceLifecycle, Token
 from cdktf import App, NamedRemoteWorkspace, TerraformStack, TerraformOutput, RemoteBackend
-from imports.aws.instance import Instance
 from imports.aws.provider import AwsProvider
 from imports.aws.subnet import Subnet
 from imports.aws.key_pair import KeyPair
@@ -192,6 +191,13 @@ class AndreBrambillaProject(TerraformStack):
             )]
         )
         # RDS MySQL Instance
+        # Variables
+        rds_endpoint= rds_output.value
+        rds_user = Credentials.RDS_USER
+        rds_password= Credentials.RDS_PASSWORD
+        rds_database = Credentials.RDS_DATABASE
+        git_token = Credentials.GIT_TOKEN
+
         rds_subnetgroup = DbSubnetGroup(self,"rds_subnetgroup",
             subnet_ids=[priv_subnet.id,priv_subnet_2.id],
             name="rds_subnetgroup"
@@ -202,9 +208,9 @@ class AndreBrambillaProject(TerraformStack):
             engine="mysql",
             engine_version="8.0.35",
             instance_class="db.t3.micro",
-            db_name="TFG_DB",
-            username="admin",
-            password="1234Prueba$",
+            db_name=rds_database,
+            username=rds_user,
+            password=rds_password,
             storage_type="gp2",
             vpc_security_group_ids=[allow_rds_rules.id],
             skip_final_snapshot=True,
@@ -213,14 +219,6 @@ class AndreBrambillaProject(TerraformStack):
 
         #Output RDS
         rds_output = TerraformOutput(self, "endpoint_db", value=rds_instance.endpoint)
-        # VARIABLES
-
-        rds_endpoint= rds_output.value
-        rds_endpoint_without_port = rds_endpoint.split(':')[0]
-        rds_user = Credentials.RDS_USER
-        rds_password= Credentials.RDS_PASSWORD
-        rds_database = Credentials.RDS_DATABASE
-        git_token = Credentials.GIT_TOKEN
         
         # Launch Configuration
         web_launch_config = LaunchConfiguration(self, "web_launch_config",
