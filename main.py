@@ -191,6 +191,13 @@ class AndreBrambillaProject(TerraformStack):
                 type="forward"
             )]
         )
+        # VARIABLES
+        rds_endpoint= rds_output.value
+        rds_user = Credentials.RDS_USER
+        rds_password= Credentials.RDS_PASSWORD
+        rds_database = Credentials.RDS_DATABASE
+        git_token = Credentials.GIT_TOKEN
+        
         # RDS MySQL Instance
         rds_subnetgroup = DbSubnetGroup(self,"rds_subnetgroup",
             subnet_ids=[priv_subnet.id,priv_subnet_2.id],
@@ -202,9 +209,9 @@ class AndreBrambillaProject(TerraformStack):
             engine="mysql",
             engine_version="8.0.35",
             instance_class="db.t3.micro",
-            db_name="TFG_DB",
-            username="admin",
-            password="1234Prueba$",
+            db_name=rds_database,
+            username=rds_user,
+            password=rds_password,
             storage_type="gp2",
             vpc_security_group_ids=[allow_rds_rules.id],
             skip_final_snapshot=True,
@@ -213,15 +220,7 @@ class AndreBrambillaProject(TerraformStack):
 
         #Output RDS
         rds_output = TerraformOutput(self, "endpoint_db", value=rds_instance.endpoint)
-        # VARIABLES
 
-        rds_endpoint= rds_output.value
-        rds_endpoint_without_port = rds_endpoint.split(':')[0]
-        rds_user = Credentials.RDS_USER
-        rds_password= Credentials.RDS_PASSWORD
-        rds_database = Credentials.RDS_DATABASE
-        git_token = Credentials.GIT_TOKEN
-        
         # Launch Configuration
         web_launch_config = LaunchConfiguration(self, "web_launch_config",
             name_prefix="web_launch_config",
