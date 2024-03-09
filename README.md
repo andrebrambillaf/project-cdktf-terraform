@@ -1,6 +1,6 @@
-# Proyecto de Fin de Grado
+# Proyecto Final
 
-Este proyecto es parte de mi trabajo de fin de grado en la Universidad Francisco de Vitoria. Utiliza Terraform CDKTF para gestionar la infraestructura como código.
+Este proyecto es parte de mi trabajo final en la Universidad Francisco de Vitoria. Se utiliza Terraform CDKTF para gestionar la infraestructura como código.
 
 ## Descripción del Proyecto
 
