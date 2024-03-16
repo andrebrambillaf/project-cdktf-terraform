@@ -22,7 +22,10 @@ Una vez que las credenciales estén configuradas, puedes ejecutar el proyecto ut
 
 ```bash
 # Instalar dependencias
-npm install
+sudo apt install nodejs npm -y
+
+# Instalar CDKTF
+npm install --global cdktf-cli@latest
 
 # Compilar y desplegar la infraestructura
 cdktf deploy
