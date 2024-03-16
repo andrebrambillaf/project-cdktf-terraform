@@ -259,9 +259,9 @@ class AndreBrambillaProject(TerraformStack):
         # Auto Scaling Group
 
         web_autoscaling_group = AutoscalingGroup(self, "web_autoscaling_group",
-            desired_capacity=1,
+            desired_capacity=2,
             max_size=4,
-            min_size=1,
+            min_size=2,
             vpc_zone_identifier=[pub_subnet.id,pub_subnet_2.id],
             launch_configuration=web_launch_config.name,
             target_group_arns=[target_group.arn],
