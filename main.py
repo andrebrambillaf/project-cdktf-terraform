@@ -192,7 +192,6 @@ class AndreBrambillaProject(TerraformStack):
             )]
         )
         # VARIABLES
-        rds_endpoint= rds_output.value
         rds_user = Credentials.RDS_USER
         rds_password= Credentials.RDS_PASSWORD
         rds_database = Credentials.RDS_DATABASE
@@ -220,7 +219,7 @@ class AndreBrambillaProject(TerraformStack):
 
         #Output RDS
         rds_output = TerraformOutput(self, "endpoint_db", value=rds_instance.endpoint)
-
+        rds_endpoint= rds_output.value
         # Launch Configuration
         web_launch_config = LaunchConfiguration(self, "web_launch_config",
             name_prefix="web_launch_config",
