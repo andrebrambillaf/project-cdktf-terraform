@@ -33,6 +33,7 @@ class AndreBrambillaProject(TerraformStack):
         # define resources here
         AwsProvider(self, "AWS", region=Credentials.REGION, access_key=Credentials.ACCESS_KEY, secret_key=Credentials.SECRET_KEY)
         
+        
         # Creating the VPC with CIDR 10.0.0.0/16 - Netmask:255.255.0.0, TotalHosts:65536
         vpc_web_main = Vpc(
             self,
@@ -192,7 +193,6 @@ class AndreBrambillaProject(TerraformStack):
             )]
         )
         # VARIABLES
-        rds_endpoint= rds_output.value
         rds_user = Credentials.RDS_USER
         rds_password= Credentials.RDS_PASSWORD
         rds_database = Credentials.RDS_DATABASE
@@ -220,7 +220,7 @@ class AndreBrambillaProject(TerraformStack):
 
         #Output RDS
         rds_output = TerraformOutput(self, "endpoint_db", value=rds_instance.endpoint)
-
+        rds_endpoint= rds_output.value
         # Launch Configuration
         web_launch_config = LaunchConfiguration(self, "web_launch_config",
             name_prefix="web_launch_config",
@@ -260,7 +260,7 @@ class AndreBrambillaProject(TerraformStack):
         # Auto Scaling Group
 
         web_autoscaling_group = AutoscalingGroup(self, "web_autoscaling_group",
-            desired_capacity=1,
+            desired_capacity=2,
             max_size=4,
             min_size=1,
             vpc_zone_identifier=[pub_subnet.id,pub_subnet_2.id],
